@@ -13,6 +13,12 @@ export type Role = "User" | "Teknisi";
 /** Display modes for the report list */
 export type ViewMode = "list" | "grid";
 
+/** Represents a logged-in user with their assigned role */
+export interface AuthUser {
+  username: string;
+  role: Role;
+}
+
 /** Core data structure for a facility report */
 export interface Report {
   id: string;

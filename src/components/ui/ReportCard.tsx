@@ -4,7 +4,7 @@
  * Responsive: list view stacks vertically on mobile with clean spacing.
  */
 
-import React from "react";
+import type React from "react";
 import {
   CheckCircle,
   PlayCircle,

@@ -4,7 +4,8 @@
  * Responsive: full-screen on mobile, centered card on desktop.
  */
 
-import React, { useState } from "react";
+import type React from "react";
+import { useState } from "react";
 import { X, ChevronRight } from "lucide-react";
 import { LOCATIONS } from "../../constants";
 

@@ -4,7 +4,7 @@
  * Shows an empty state when no reports match the current filters.
  */
 
-import React from "react";
+import type React from "react";
 import { Search } from "lucide-react";
 import type { Report, ViewMode, Role, ReportStatus } from "../../types";
 import { ReportCard } from "../ui/ReportCard";

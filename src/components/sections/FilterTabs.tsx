@@ -4,7 +4,7 @@
  * Responsive: scrollable on mobile with hidden scrollbar.
  */
 
-import React from "react";
+import type React from "react";
 import type { Report } from "../../types";
 
 interface FilterTabsProps {
