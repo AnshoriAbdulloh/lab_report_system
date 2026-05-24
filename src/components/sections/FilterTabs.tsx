@@ -27,7 +27,7 @@ export const FilterTabs: React.FC<FilterTabsProps> = ({
 
   return (
     <div
-      className='flex bg-white p-1 sm:p-1.5 rounded-xl sm:rounded-2xl border border-gray-100 overflow-x-auto w-full md:w-fit shadow-sm'
+      className='flex bg-white dark:bg-zinc-900 p-1 sm:p-1.5 rounded-xl sm:rounded-2xl border border-gray-100 dark:border-zinc-800 overflow-x-auto w-full md:w-fit shadow-sm transition-colors duration-300'
       style={{
         scrollbarWidth: "none",
         msOverflowStyle: "none",
@@ -40,18 +40,18 @@ export const FilterTabs: React.FC<FilterTabsProps> = ({
         <button
           key={tab}
           onClick={() => setActiveTab(tab)}
-          className={`px-3 sm:px-5 py-1.5 sm:py-2 whitespace-nowrap rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-semibold transition-all flex items-center gap-1.5 sm:gap-2 ${
+          className={`px-3 sm:px-5 py-1.5 sm:py-2 whitespace-nowrap rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-semibold transition-all flex items-center gap-1.5 sm:gap-2 cursor-pointer ${
             activeTab === tab
-              ? "bg-gray-900 text-white shadow-lg shadow-gray-200"
-              : "text-gray-400 hover:text-gray-600"
+              ? "bg-gray-900 dark:bg-zinc-100 text-white dark:text-zinc-900 shadow-lg shadow-gray-200 dark:shadow-zinc-950/20"
+              : "text-gray-400 hover:text-gray-600 dark:hover:text-zinc-300"
           }`}
         >
           <span>{tab}</span>
           <span
             className={`text-[9px] sm:text-[10px] px-1.5 py-0.5 rounded-full ${
               activeTab === tab
-                ? "bg-white/20 text-white"
-                : "bg-gray-100 text-gray-500"
+                ? "bg-white/20 dark:bg-zinc-950/20 text-white dark:text-zinc-900"
+                : "bg-gray-100 dark:bg-zinc-800 text-gray-500 dark:text-zinc-400"
             }`}
           >
             {getCount(tab)}

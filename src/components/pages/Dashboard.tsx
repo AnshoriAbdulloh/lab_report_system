@@ -86,17 +86,17 @@ export const Dashboard: React.FC = () => {
         <div className="mb-6 sm:mb-10">
           <div className="flex items-center gap-3 mb-2">
             {role === "Teknisi" ? (
-              <Wrench className="text-gray-400" size={24} />
+              <Wrench className="text-gray-400 dark:text-zinc-500" size={24} />
             ) : (
-              <UserCircle className="text-gray-400" size={24} />
+              <UserCircle className="text-gray-400 dark:text-zinc-500" size={24} />
             )}
-            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-zinc-100 tracking-tight">
               {role === "Teknisi"
                 ? "Manajemen Antrean Tugas"
                 : "Layanan Fasilitas Lab"}
             </h1>
           </div>
-          <p className="text-xs sm:text-sm text-gray-500">
+          <p className="text-xs sm:text-sm text-gray-500 dark:text-zinc-400">
             {role === "Teknisi"
               ? "Kelola laporan kerusakan dan pantau progres perbaikan unit laboratorium."
               : "Pantau status perbaikan dan kirim keluhan fasilitas kampus secara real-time."}

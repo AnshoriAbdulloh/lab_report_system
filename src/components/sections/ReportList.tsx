@@ -24,11 +24,11 @@ export const ReportList: React.FC<ReportListProps> = ({
 }) => {
   if (reports.length === 0) {
     return (
-      <div className='py-24 text-center border-2 border-dashed border-gray-100 rounded-[2.5rem] bg-gray-50/50'>
-        <div className='w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm border border-gray-100'>
-          <Search size={24} className='text-gray-300' />
+      <div className='py-24 text-center border-2 border-dashed border-gray-100 dark:border-zinc-800 rounded-[2.5rem] bg-gray-50/50 dark:bg-zinc-900/20 transition-all'>
+        <div className='w-16 h-16 bg-white dark:bg-zinc-900 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm border border-gray-100 dark:border-zinc-800 transition-colors'>
+          <Search size={24} className='text-gray-300 dark:text-zinc-600' />
         </div>
-        <p className='text-sm text-gray-400 font-medium'>
+        <p className='text-sm text-gray-400 dark:text-zinc-500 font-medium'>
           Tidak ada laporan yang sesuai kriteria.
         </p>
       </div>

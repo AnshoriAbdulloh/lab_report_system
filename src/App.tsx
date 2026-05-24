@@ -9,6 +9,7 @@ import type React from "react";
 
 // Auth
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import { ThemeProvider } from "./context/ThemeContext";
 
 // Pages
 import { LoginPage } from "./components/pages/LoginPage";
@@ -22,7 +23,7 @@ const AppContent: React.FC = () => {
   const { user } = useAuth();
 
   return (
-    <div className="min-h-screen bg-[#FDFDFD] text-[#1A1A1A] font-['Poppins']">
+    <div className="min-h-screen bg-[#FDFDFD] dark:bg-zinc-950 text-[#1A1A1A] dark:text-zinc-100 font-['Poppins'] transition-colors duration-300">
       <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet"
@@ -51,7 +52,9 @@ const AppContent: React.FC = () => {
 const App: React.FC = () => {
   return (
     <AuthProvider>
-      <AppContent />
+      <ThemeProvider>
+        <AppContent />
+      </ThemeProvider>
     </AuthProvider>
   );
 };
