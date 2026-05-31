@@ -1,10 +1,3 @@
-/**
- * App.tsx
- * Root application component for the Lab Report System (LabCare).
- * Manages authentication flow: shows LoginPage when not authenticated,
- * and the role-appropriate Dashboard when logged in.
- */
-
 import type React from "react";
 
 // Auth
@@ -19,14 +12,14 @@ import { Dashboard } from "./components/pages/Dashboard";
  * AppContent handles the conditional rendering based on auth state.
  * Separated from App so it can access AuthContext via useAuth().
  */
-const AppContent: React.FC = () => {
+const AppContent = () => {
   const { user } = useAuth();
 
   return (
     <div className="min-h-screen bg-[#FDFDFD] dark:bg-zinc-950 text-[#1A1A1A] dark:text-zinc-100 font-['Poppins'] transition-colors duration-300">
       <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet"
+        href='https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap'
+        rel='stylesheet'
       />
 
       {user ? <Dashboard /> : <LoginPage />}
@@ -49,7 +42,7 @@ const AppContent: React.FC = () => {
   );
 };
 
-const App: React.FC = () => {
+const App = () => {
   return (
     <AuthProvider>
       <ThemeProvider>

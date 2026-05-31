@@ -20,6 +20,7 @@ export const FilterTabs: React.FC<FilterTabsProps> = ({
 }) => {
   const tabs = ["Semua", "Menunggu", "Disetujui", "Progres", "Selesai"];
 
+  // count data that get filter
   const getCount = (status: string) => {
     if (status === "Semua") return reports.length;
     return reports.filter((r) => r.status === status).length;
@@ -36,6 +37,8 @@ export const FilterTabs: React.FC<FilterTabsProps> = ({
       <style>{`
         .filter-tabs-scroll::-webkit-scrollbar { display: none; }
       `}</style>
+
+      {/* make a butten filter by looping */}
       {tabs.map((tab) => (
         <button
           key={tab}

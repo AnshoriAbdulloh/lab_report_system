@@ -21,12 +21,24 @@ interface AuthContextType {
   logout: () => void;
 }
 
+interface AuthProviderContext {
+  children: React.ReactNode;
+}
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const [user, setUser] = useState<AuthUser | null>(null);
+export const AuthProvider = ({ children }: AuthProviderContext) => {
+  const [user, setUser] = useState<AuthUser | null>(() => {
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) {
+      try {
+        return JSON.parse(savedUser) as AuthUser;
+      } catch (e) {
+        localStorage.removeItem("user");
+      }
+    }
+    return null;
+  });
 
   /**
    * Attempts to log in with the given credentials.
@@ -43,7 +55,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         return "Username atau password salah.";
       }
 
-      setUser({ username: account.username, role: account.role });
+      const loggedInUser: AuthUser = {
+        username: account.username,
+        role: account.role,
+      };
+      setUser(loggedInUser);
+      localStorage.setItem("user", JSON.stringify(loggedInUser));
       return null;
     },
     [],
@@ -51,6 +68,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const logout = useCallback(() => {
     setUser(null);
+    localStorage.removeItem("user");
   }, []);
 
   return (

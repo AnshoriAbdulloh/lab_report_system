@@ -65,6 +65,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   );
 };
 
+// this function for easier get context and checking exist context
 export const useTheme = (): ThemeContextType => {
   const context = useContext(ThemeContext);
   if (!context) {
