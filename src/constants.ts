@@ -28,6 +28,7 @@ export const INITIAL_REPORTS: Report[] = [
     category: "Hardware",
     status: "Menunggu",
     reporter: "Andi",
+    reporterName: "Andi Saputra",
     date: "26 Oct 2023",
   },
   {
@@ -38,6 +39,7 @@ export const INITIAL_REPORTS: Report[] = [
     category: "Fasilitas",
     status: "Disetujui",
     reporter: "Budi",
+    reporterName: "Budi Santoso",
     date: "25 Oct 2023",
   },
   {
@@ -48,6 +50,7 @@ export const INITIAL_REPORTS: Report[] = [
     category: "Software",
     status: "Progres",
     reporter: "Dosen Citra",
+    reporterName: "Dosen Citra",
     date: "24 Oct 2023",
   },
   {
@@ -58,6 +61,7 @@ export const INITIAL_REPORTS: Report[] = [
     category: "Jaringan",
     status: "Selesai",
     reporter: "Dedi",
+    reporterName: "Dedi Kurniawan",
     date: "22 Oct 2023",
   },
 ];

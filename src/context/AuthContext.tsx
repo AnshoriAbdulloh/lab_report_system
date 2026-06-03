@@ -2,7 +2,7 @@
  * AuthContext.tsx
  * Provides global authentication state management.
  * Manages login/logout operations with hardcoded demo credentials.
- * No persistence — auth resets on page refresh.
+ * Session persists for 3 days of inactivity, then auto-expires.
  */
 
 import type React from "react";
@@ -27,16 +27,48 @@ interface AuthProviderContext {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+/** Session expires after 3 days of inactivity (in milliseconds) */
+const SESSION_DURATION_MS = 3 * 24 * 60 * 60 * 1000;
+const STORAGE_USER_KEY = "user";
+const STORAGE_LAST_ACTIVE_KEY = "lastActiveAt";
+
+/** Clears all session data from localStorage */
+const clearSession = () => {
+  localStorage.removeItem(STORAGE_USER_KEY);
+  localStorage.removeItem(STORAGE_LAST_ACTIVE_KEY);
+};
+
+/** Updates the lastActiveAt timestamp to now (extends the session by another 3 days) */
+const refreshSession = () => {
+  localStorage.setItem(STORAGE_LAST_ACTIVE_KEY, String(Date.now()));
+};
+
 export const AuthProvider = ({ children }: AuthProviderContext) => {
   const [user, setUser] = useState<AuthUser | null>(() => {
-    const savedUser = localStorage.getItem("user");
-    if (savedUser) {
+    const savedUser = localStorage.getItem(STORAGE_USER_KEY);
+    const lastActive = localStorage.getItem(STORAGE_LAST_ACTIVE_KEY);
+
+    if (savedUser && lastActive) {
+      const elapsed = Date.now() - Number(lastActive);
+
+      // Session expired — clear and force re-login
+      if (elapsed > SESSION_DURATION_MS) {
+        clearSession();
+        return null;
+      }
+
+      // Session still valid — refresh timestamp and restore user
+      refreshSession();
       try {
         return JSON.parse(savedUser) as AuthUser;
-      } catch (e) {
-        localStorage.removeItem("user");
+      } catch {
+        clearSession();
+        return null;
       }
     }
+
+    // No session data found
+    clearSession();
     return null;
   });
 
@@ -60,7 +92,8 @@ export const AuthProvider = ({ children }: AuthProviderContext) => {
         role: account.role,
       };
       setUser(loggedInUser);
-      localStorage.setItem("user", JSON.stringify(loggedInUser));
+      localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(loggedInUser));
+      refreshSession(); // stamp login time
       return null;
     },
     [],
@@ -68,7 +101,7 @@ export const AuthProvider = ({ children }: AuthProviderContext) => {
 
   const logout = useCallback(() => {
     setUser(null);
-    localStorage.removeItem("user");
+    clearSession(); // wipe user + timestamp on explicit logout
   }, []);
 
   return (

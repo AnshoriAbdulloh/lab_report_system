@@ -1,5 +1,3 @@
-import type React from "react";
-
 // Auth
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { ThemeProvider } from "./context/ThemeContext";
@@ -16,7 +14,7 @@ const AppContent = () => {
   const { user } = useAuth();
 
   return (
-    <div className="min-h-screen bg-[#FDFDFD] dark:bg-zinc-950 text-[#1A1A1A] dark:text-zinc-100 font-['Poppins'] transition-colors duration-300">
+    <div className="min-h-screen bg-[#f1f1f1] dark:bg-zinc-950 text-[#1A1A1A] dark:text-zinc-100 font-['Poppins'] transition-colors duration-300">
       <link
         href='https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap'
         rel='stylesheet'

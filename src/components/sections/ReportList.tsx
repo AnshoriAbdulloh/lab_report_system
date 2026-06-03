@@ -43,6 +43,7 @@ export const ReportList: React.FC<ReportListProps> = ({
           : "space-y-4"
       }
     >
+      {/* Mapping report */}
       {reports.map((report) => (
         <ReportCard
           key={report.id}

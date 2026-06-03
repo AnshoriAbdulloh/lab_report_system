@@ -27,6 +27,10 @@ export interface Report {
   location: string;
   category: string;
   status: ReportStatus;
-  reporter: string;
-  date: string;
+  reporter: string;      // account username (from login)
+  reporterName: string;  // real name typed by the user in the form
+  date: string;          // formatted creation date string
+  dateTimestamp?: number; // Unix ms at creation — used to calculate resolution gap
+  resolvedDate?: string;  // formatted date when marked Selesai
+  resolutionTime?: string; // e.g. "2 jam 35 menit"
 }

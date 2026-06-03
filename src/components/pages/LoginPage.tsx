@@ -44,7 +44,7 @@ export const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FDFDFD] dark:bg-zinc-950 flex items-center justify-center p-4 font-['Poppins'] relative overflow-hidden transition-colors duration-300">
+    <div className="min-h-screen bg-[#f1f1f1] dark:bg-zinc-950 flex items-center justify-center p-4 font-['Poppins'] relative overflow-hidden transition-colors duration-300">
       {/* Google Fonts */}
       <link
         href='https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap'
@@ -61,13 +61,6 @@ export const LoginPage = () => {
         >
           {theme === "light" ? <Moon size={18} /> : <Sun size={18} />}
         </button>
-      </div>
-
-      {/* Subtle background decoration */}
-      <div className='absolute inset-0 overflow-hidden pointer-events-none'>
-        <div className='absolute -top-40 -right-40 w-80 h-80 bg-gray-100 dark:bg-zinc-900 rounded-full opacity-50 dark:opacity-20 blur-3xl' />
-        <div className='absolute -bottom-40 -left-40 w-96 h-96 bg-gray-100 dark:bg-zinc-900 rounded-full opacity-40 dark:opacity-20 blur-3xl' />
-        <div className='absolute top-1/4 left-1/3 w-64 h-64 bg-gray-50 dark:bg-zinc-900/50 rounded-full opacity-60 dark:opacity-10 blur-3xl' />
       </div>
 
       {/* Login Card */}

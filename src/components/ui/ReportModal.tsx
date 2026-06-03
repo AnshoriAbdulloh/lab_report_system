@@ -17,6 +17,7 @@ interface ReportModalProps {
     description: string;
     category: string;
     location: string;
+    reporterName: string;
   }) => void;
 }
 
@@ -29,14 +30,16 @@ export const ReportModal: React.FC<ReportModalProps> = ({
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("Hardware");
   const [location, setLocation] = useState(LOCATIONS[0]);
+  const [reporterName, setReporterName] = useState("");
 
   if (!isOpen) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit({ title, description, category, location });
+    onSubmit({ title, description, category, location, reporterName });
     setTitle("");
     setDescription("");
+    setReporterName("");
     setCategory("Hardware");
     setLocation(LOCATIONS[0]);
   };
@@ -117,6 +120,20 @@ export const ReportModal: React.FC<ReportModalProps> = ({
               className='w-full px-4 py-3 bg-gray-50 dark:bg-zinc-800/50 border border-transparent dark:border-zinc-800 rounded-2xl text-sm dark:text-zinc-100 focus:bg-white dark:focus:bg-zinc-800 focus:ring-1 focus:ring-gray-900 dark:focus:ring-zinc-400 focus:border-gray-900 dark:focus:border-zinc-700 outline-none transition-all'
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <label className='block text-[10px] font-bold text-gray-400 dark:text-zinc-500 uppercase tracking-widest mb-2'>
+              Nama Pelapor
+            </label>
+            <input
+              required
+              type='text'
+              placeholder='Masukkan nama lengkap Anda'
+              className='w-full px-4 py-3 bg-gray-50 dark:bg-zinc-800/50 border border-transparent dark:border-zinc-800 rounded-2xl text-sm dark:text-zinc-100 focus:bg-white dark:focus:bg-zinc-800 focus:ring-1 focus:ring-gray-900 dark:focus:ring-zinc-400 focus:border-gray-900 dark:focus:border-zinc-700 outline-none transition-all'
+              value={reporterName}
+              onChange={(e) => setReporterName(e.target.value)}
             />
           </div>
 

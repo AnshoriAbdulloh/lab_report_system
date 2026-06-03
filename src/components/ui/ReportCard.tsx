@@ -12,6 +12,7 @@ import {
   ChevronRight,
   MapPin,
   Clock,
+  Timer,
 } from "lucide-react";
 import type { Report, ViewMode, Role, ReportStatus } from "../../types";
 
@@ -76,11 +77,11 @@ export const ReportCard: React.FC<ReportCardProps> = ({
           <div className='flex items-center justify-between mt-3 pt-3 border-t border-gray-50 dark:border-zinc-800'>
             <div className='flex items-center gap-2'>
               <div className='w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 flex items-center justify-center text-[10px] font-bold text-gray-600 dark:text-zinc-300'>
-                {report.reporter.charAt(0)}
+                {(report.reporterName || report.reporter).charAt(0).toUpperCase()}
               </div>
               <div className='flex flex-col'>
                 <span className='text-[10px] font-bold text-gray-900 dark:text-zinc-100'>
-                  {report.reporter}
+                  {report.reporterName || report.reporter}
                 </span>
                 <span className='text-[9px] text-gray-400 dark:text-zinc-500 font-medium'>
                   {report.date}
@@ -123,6 +124,26 @@ export const ReportCard: React.FC<ReportCardProps> = ({
               <ChevronRight size={16} className='text-gray-300 dark:text-zinc-600' />
             )}
           </div>
+
+          {/* Resolution info — only when Selesai */}
+          {report.status === "Selesai" && report.resolvedDate && (
+            <div className='mt-3 pt-3 border-t border-gray-50 dark:border-zinc-800 flex flex-wrap gap-x-4 gap-y-1'>
+              <div className='flex items-center gap-1.5'>
+                <CheckCircle size={11} className='text-green-500 dark:text-green-400 shrink-0' />
+                <span className='text-[9px] font-semibold text-gray-500 dark:text-zinc-400'>
+                  Selesai: {report.resolvedDate}
+                </span>
+              </div>
+              {report.resolutionTime && (
+                <div className='flex items-center gap-1.5'>
+                  <Timer size={11} className='text-gray-400 dark:text-zinc-500 shrink-0' />
+                  <span className='text-[9px] font-semibold text-gray-500 dark:text-zinc-400'>
+                    Waktu penanganan: {report.resolutionTime}
+                  </span>
+                </div>
+              )}
+            </div>
+          )}
         </>
       ) : (
         /* ---- GRID VIEW ---- */
@@ -170,10 +191,10 @@ export const ReportCard: React.FC<ReportCardProps> = ({
           <div className='mt-auto pt-4 sm:pt-5 border-t border-gray-50 dark:border-zinc-800 flex items-center justify-between'>
             <div className='flex items-center gap-2'>
               <div className='w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 flex items-center justify-center text-[10px] font-bold text-gray-600 dark:text-zinc-300'>
-                {report.reporter.charAt(0)}
+                {(report.reporterName || report.reporter).charAt(0).toUpperCase()}
               </div>
               <span className='text-[10px] font-bold text-gray-900 dark:text-zinc-100'>
-                {report.reporter}
+                {report.reporterName || report.reporter}
               </span>
             </div>
 
@@ -209,6 +230,26 @@ export const ReportCard: React.FC<ReportCardProps> = ({
               </div>
             )}
           </div>
+
+          {/* Resolution info — only when Selesai */}
+          {report.status === "Selesai" && report.resolvedDate && (
+            <div className='mt-3 pt-3 border-t border-gray-50 dark:border-zinc-800 flex flex-col gap-1'>
+              <div className='flex items-center gap-1.5'>
+                <CheckCircle size={11} className='text-green-500 dark:text-green-400 shrink-0' />
+                <span className='text-[9px] font-semibold text-gray-500 dark:text-zinc-400'>
+                  Selesai: {report.resolvedDate}
+                </span>
+              </div>
+              {report.resolutionTime && (
+                <div className='flex items-center gap-1.5'>
+                  <Timer size={11} className='text-gray-400 dark:text-zinc-500 shrink-0' />
+                  <span className='text-[9px] font-semibold text-gray-500 dark:text-zinc-400'>
+                    Waktu penanganan: {report.resolutionTime}
+                  </span>
+                </div>
+              )}
+            </div>
+          )}
         </>
       )}
     </div>
