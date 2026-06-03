@@ -17,6 +17,7 @@ import {
   onSnapshot,
   setDoc,
   updateDoc,
+  type UpdateData,
 } from "firebase/firestore";
 
 // Types & Constants
@@ -95,7 +96,7 @@ export const Dashboard: React.FC = () => {
 
   const handleUpdateStatus = (id: string, nextStatus: ReportStatus) => {
     // Build the fields to update
-    const updateData: Record<string, unknown> = { status: nextStatus };
+    const updateData: UpdateData<Report> = { status: nextStatus };
 
     if (nextStatus === "Selesai") {
       const now = Date.now();
