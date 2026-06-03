@@ -8,10 +8,17 @@
 import type React from "react";
 import { useState, useMemo, useEffect } from "react";
 import { UserCircle, Wrench } from "lucide-react";
+import { UpdateData } from "firebase/firestore";
 
 // Firebase Configuration
 import { db } from "../../firebase";
-import { collection, doc, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  onSnapshot,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 
 // Types & Constants
 import type { ViewMode, Report, ReportStatus } from "../../types";
@@ -45,30 +52,34 @@ export const Dashboard: React.FC = () => {
   // Subscribe to Cloud Firestore reports collection
   useEffect(() => {
     const reportsRef = collection(db, "reports");
-    const unsubscribe = onSnapshot(reportsRef, (snapshot) => {
-      if (!snapshot.empty) {
-        const reportsList: Report[] = [];
-        snapshot.forEach((doc) => {
-          reportsList.push({
-            ...doc.data(),
-            id: doc.id,
-          } as Report);
-        });
-        
-        // Sort reports by ID descending (newest report IDs first, e.g. RPT-104, RPT-103)
-        reportsList.sort((a, b) => b.id.localeCompare(a.id));
-        setReports(reportsList);
-      } else {
-        // Seed Firestore database if completely empty
-        INITIAL_REPORTS.forEach((report) => {
-          setDoc(doc(db, "reports", report.id), report);
-        });
-      }
-      setIsLoading(false);
-    }, (error) => {
-      console.error("Firestore onSnapshot error:", error);
-      setIsLoading(false);
-    });
+    const unsubscribe = onSnapshot(
+      reportsRef,
+      (snapshot) => {
+        if (!snapshot.empty) {
+          const reportsList: Report[] = [];
+          snapshot.forEach((doc) => {
+            reportsList.push({
+              ...doc.data(),
+              id: doc.id,
+            } as Report);
+          });
+
+          // Sort reports by ID descending (newest report IDs first, e.g. RPT-104, RPT-103)
+          reportsList.sort((a, b) => b.id.localeCompare(a.id));
+          setReports(reportsList);
+        } else {
+          // Seed Firestore database if completely empty
+          INITIAL_REPORTS.forEach((report) => {
+            setDoc(doc(db, "reports", report.id), report);
+          });
+        }
+        setIsLoading(false);
+      },
+      (error) => {
+        console.error("Firestore onSnapshot error:", error);
+        setIsLoading(false);
+      },
+    );
 
     return () => unsubscribe();
   }, []);
@@ -85,7 +96,7 @@ export const Dashboard: React.FC = () => {
 
   const handleUpdateStatus = (id: string, nextStatus: ReportStatus) => {
     // Build the fields to update
-    const updateData: Record<string, unknown> = { status: nextStatus };
+    const updateData: UpdateData<any> = { status: nextStatus };
 
     if (nextStatus === "Selesai") {
       const now = Date.now();
@@ -131,7 +142,8 @@ export const Dashboard: React.FC = () => {
   }) => {
     // Use last 3 digits of timestamp + 1 random digit → very low collision chance
     const timestamp = Date.now();
-    const suffix = String(timestamp).slice(-3) + String(Math.floor(Math.random() * 10));
+    const suffix =
+      String(timestamp).slice(-3) + String(Math.floor(Math.random() * 10));
     const id = `RPT-${suffix}`;
     const now = Date.now();
     const reportToAdd: Report = {
@@ -150,7 +162,7 @@ export const Dashboard: React.FC = () => {
         hour12: false,
       }),
     };
-    
+
     setDoc(doc(db, "reports", id), reportToAdd)
       .then(() => {
         setIsModalOpen(false);
@@ -164,22 +176,25 @@ export const Dashboard: React.FC = () => {
     <>
       <Navbar onOpenModal={() => setIsModalOpen(true)} />
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
+      <main className='max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-10'>
         {/* Dynamic Heading based on Role */}
-        <div className="mb-6 sm:mb-10">
-          <div className="flex items-center gap-3 mb-2">
+        <div className='mb-6 sm:mb-10'>
+          <div className='flex items-center gap-3 mb-2'>
             {role === "Teknisi" ? (
-              <Wrench className="text-gray-400 dark:text-zinc-500" size={24} />
+              <Wrench className='text-gray-400 dark:text-zinc-500' size={24} />
             ) : (
-              <UserCircle className="text-gray-400 dark:text-zinc-500" size={24} />
+              <UserCircle
+                className='text-gray-400 dark:text-zinc-500'
+                size={24}
+              />
             )}
-            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-zinc-100 tracking-tight">
+            <h1 className='text-xl sm:text-2xl font-bold text-gray-900 dark:text-zinc-100 tracking-tight'>
               {role === "Teknisi"
                 ? "Manajemen Antrean Tugas"
                 : "Layanan Fasilitas Lab"}
             </h1>
           </div>
-          <p className="text-xs sm:text-sm text-gray-500 dark:text-zinc-400">
+          <p className='text-xs sm:text-sm text-gray-500 dark:text-zinc-400'>
             {role === "Teknisi"
               ? "Kelola laporan kerusakan dan pantau progres perbaikan unit laboratorium."
               : "Pantau status perbaikan dan kirim keluhan fasilitas kampus secara real-time."}
@@ -187,7 +202,7 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Filters and Controls container */}
-        <div className="space-y-4 sm:space-y-6 mb-6 sm:mb-8">
+        <div className='space-y-4 sm:space-y-6 mb-6 sm:mb-8'>
           <FilterTabs
             activeTab={activeTab}
             setActiveTab={setActiveTab}
@@ -204,9 +219,11 @@ export const Dashboard: React.FC = () => {
 
         {/* Report List view container */}
         {isLoading ? (
-          <div className="flex flex-col items-center justify-center py-20 text-gray-400 dark:text-zinc-500">
-            <div className="w-8 h-8 border-4 border-gray-200 dark:border-zinc-800 border-t-gray-900 dark:border-t-zinc-100 rounded-full animate-spin mb-4" />
-            <p className="text-xs font-semibold uppercase tracking-wider">Memuat Laporan...</p>
+          <div className='flex flex-col items-center justify-center py-20 text-gray-400 dark:text-zinc-500'>
+            <div className='w-8 h-8 border-4 border-gray-200 dark:border-zinc-800 border-t-gray-900 dark:border-t-zinc-100 rounded-full animate-spin mb-4' />
+            <p className='text-xs font-semibold uppercase tracking-wider'>
+              Memuat Laporan...
+            </p>
           </div>
         ) : (
           <ReportList
