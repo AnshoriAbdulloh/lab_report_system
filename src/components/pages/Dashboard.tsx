@@ -8,7 +8,6 @@
 import type React from "react";
 import { useState, useMemo, useEffect } from "react";
 import { UserCircle, Wrench } from "lucide-react";
-import { UpdateData } from "firebase/firestore";
 
 // Firebase Configuration
 import { db } from "../../firebase";
@@ -96,7 +95,7 @@ export const Dashboard: React.FC = () => {
 
   const handleUpdateStatus = (id: string, nextStatus: ReportStatus) => {
     // Build the fields to update
-    const updateData: UpdateData<any> = { status: nextStatus };
+    const updateData: Record<string, unknown> = { status: nextStatus };
 
     if (nextStatus === "Selesai") {
       const now = Date.now();
