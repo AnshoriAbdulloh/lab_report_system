@@ -5,7 +5,17 @@
  */
 
 import type React from "react";
-import { ClipboardList, Plus, LogOut, Sun, Moon } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import {
+  ClipboardList,
+  Plus,
+  LogOut,
+  Sun,
+  Moon,
+  Menu,
+  Monitor,
+} from "lucide-react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
 
@@ -16,6 +26,22 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
   const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <nav className='sticky top-0 z-40 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border-b border-gray-100 dark:border-zinc-800 transition-colors duration-300'>
@@ -74,14 +100,48 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenModal }) => {
             {theme === "light" ? <Moon size={18} /> : <Sun size={18} />}
           </button>
 
-          {/* Logout button */}
-          <button
-            onClick={logout}
-            className='p-2 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-xl text-gray-400 hover:text-gray-900 dark:hover:text-zinc-100 transition-all'
-            title='Keluar'
-          >
-            <LogOut size={18} />
-          </button>
+          {/* Menu Dropdown */}
+          <div className='relative' ref={dropdownRef}>
+            <button
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className='p-2 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-xl text-gray-400 hover:text-gray-900 dark:hover:text-zinc-100 transition-all'
+              title='Menu'
+            >
+              <Menu size={18} />
+            </button>
+
+            {isDropdownOpen && (
+              <div className='absolute right-0 mt-2 w-48 bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800 rounded-xl shadow-lg py-2 z-50'>
+                <Link
+                  to='/'
+                  className='flex items-center gap-3 px-4 py-2 text-sm text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors'
+                  onClick={() => setIsDropdownOpen(false)}
+                >
+                  <ClipboardList size={16} />
+                  Dashboard Laporan
+                </Link>
+                <Link
+                  to='/hardware'
+                  className='flex items-center gap-3 px-4 py-2 text-sm text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors'
+                  onClick={() => setIsDropdownOpen(false)}
+                >
+                  <Monitor size={16} />
+                  List Hardware
+                </Link>
+                <div className='h-px bg-gray-100 dark:bg-zinc-800 my-1'></div>
+                <button
+                  onClick={() => {
+                    setIsDropdownOpen(false);
+                    logout();
+                  }}
+                  className='w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors text-left'
+                >
+                  <LogOut size={16} />
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </nav>

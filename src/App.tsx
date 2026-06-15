@@ -6,6 +6,9 @@ import { ThemeProvider } from "./context/ThemeContext";
 import { LoginPage } from "./components/pages/LoginPage";
 import { Dashboard } from "./components/pages/Dashboard";
 
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HardwareList } from './components/pages/HardwareList';
+
 /**
  * AppContent handles the conditional rendering based on auth state.
  * Separated from App so it can access AuthContext via useAuth().
@@ -20,7 +23,15 @@ const AppContent = () => {
         rel='stylesheet'
       />
 
-      {user ? <Dashboard /> : <LoginPage />}
+      {user ? (
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/hardware" element={<HardwareList />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      ) : (
+        <LoginPage />
+      )}
 
       {/* Utility Styles */}
       <style>{`
@@ -42,11 +53,13 @@ const AppContent = () => {
 
 const App = () => {
   return (
-    <AuthProvider>
-      <ThemeProvider>
-        <AppContent />
-      </ThemeProvider>
-    </AuthProvider>
+    <BrowserRouter>
+      <AuthProvider>
+        <ThemeProvider>
+          <AppContent />
+        </ThemeProvider>
+      </AuthProvider>
+    </BrowserRouter>
   );
 };
 

@@ -38,7 +38,7 @@ import { ReportModal } from "../ui/ReportModal";
 // Layout Components
 import { Navbar } from "../layout/Navbar";
 
-export const Dashboard: React.FC = () => {
+export const Dashboard = () => {
   const { user } = useAuth();
   const role = user!.role; // Dashboard is only rendered when authenticated
 
@@ -84,6 +84,8 @@ export const Dashboard: React.FC = () => {
     return () => unsubscribe();
   }, []);
 
+  // useMemo akan tetap terender ketika dashboard rerender tapi fungsi didalm useMemo tidak dijalankan ulang jika dependency nya tidak berubah (param ke 2) hasil lama yg dipake
+  // simply agar fungsi tidak dirender ketika dashboard rerender
   const filteredReports = useMemo(() => {
     return reports.filter((r) => {
       const matchesTab = activeTab === "Semua" || r.status === activeTab;

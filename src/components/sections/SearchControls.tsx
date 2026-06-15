@@ -15,12 +15,12 @@ interface SearchControlsProps {
   setViewMode: (mode: ViewMode) => void;
 }
 
-export const SearchControls: React.FC<SearchControlsProps> = ({
+export const SearchControls = ({
   searchTerm,
   setSearchTerm,
   viewMode,
   setViewMode,
-}) => {
+}: SearchControlsProps) => {
   return (
     <div className='flex items-center gap-3 sm:gap-4'>
       <div className='relative group flex-1 sm:flex-none sm:w-96'>

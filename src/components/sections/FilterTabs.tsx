@@ -18,7 +18,7 @@ export const FilterTabs: React.FC<FilterTabsProps> = ({
   setActiveTab,
   reports,
 }) => {
-  const tabs = ["Semua", "Menunggu", "Disetujui", "Progres", "Selesai"];
+  const tabs = ["Menunggu", "Disetujui", "Progres", "Selesai", "Semua"];
 
   // count data that get filter
   const getCount = (status: string) => {
